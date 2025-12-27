@@ -67,7 +67,7 @@ Ingest WhatsApp-like messages with HMAC signature validation.
 
 **Headers:**
 - `Content-Type: application/json`
-- `X-Signature: <HMAC-SHA256 hex signature>`
+- `X-Signature: demo-signature (without this we get 401 error)`
 
 **Body:**
 ```json
@@ -146,7 +146,7 @@ Get message analytics.
 
 ### GET /health/live
 
-Liveness probe - always returns 200 when app is running.
+Liveness probe - always returns 200 when the app is running.
 
 ### GET /health/ready
 
@@ -161,7 +161,7 @@ Returns 503 if not ready.
 Prometheus-style metrics endpoint.
 
 **Metrics:**
-- `http_requests_total{path,status}`: Total HTTP requests by path and status
+- `http_requests_total{path, status}`: Total HTTP requests by path and status
 - `webhook_requests_total{result}`: Webhook outcomes (created, duplicate, invalid_signature, validation_error)
 - `request_latency_ms_bucket{le}`: Request latency histogram
 
@@ -172,7 +172,7 @@ Prometheus-style metrics endpoint.
 The service implements HMAC-SHA256 signature verification to ensure message authenticity:
 
 1. Server reads `WEBHOOK_SECRET` from environment variable
-2. For each request, computes: `HMAC-SHA256(secret, raw_body_bytes)`
+2. For each request, compute: `HMAC-SHA256(secret, raw_body_bytes)`
 3. Compares computed signature with `X-Signature` header using constant-time comparison
 4. Rejects requests with invalid/missing signatures with 401 status
 5. No database operations occur for invalid signatures
@@ -212,7 +212,7 @@ Returns `null` for timestamps when no messages exist.
 
 Prometheus metrics use counter and histogram types:
 
-- **Counters** increment on each event with labels for categorization
+- **Counters** increment on each event with labels for categorisation
 - **Histograms** track latency distribution using predefined buckets (100ms, 500ms, +Inf)
 - Thread-safe implementation using locks for concurrent request handling
 - Metrics survive for the process lifetime (in-memory)
