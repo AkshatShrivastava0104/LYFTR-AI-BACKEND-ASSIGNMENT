@@ -9,7 +9,7 @@ A production-style FastAPI service for ingesting WhatsApp-like messages with HMA
 - **Analytics endpoint** with sender statistics
 - **Health probes** for liveness and readiness checks
 - **Prometheus metrics** for observability
-- **Structured JSON logging** for all requests
+- **Structured JSON logging** for all requests 
 - **SQLite database** with Docker volume persistence
 - **12-factor configuration** via environment variables
 
