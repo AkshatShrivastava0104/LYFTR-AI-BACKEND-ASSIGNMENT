@@ -11,20 +11,22 @@ class WebhookMessage(BaseModel):
     text: Optional[str] = Field(None, max_length=4096)
 
     @validator('from_', 'to')
-    def validate_e164(cls, v):
-        if not re.match(r'^\+\d+$', v):
-            raise ValueError('Must be E.164 format: start with + followed by digits')
+    def validate_indian_phone(cls, v):
+        if not re.match(r'^\+91[6-9]\d{9}$', v):
+            raise ValueError('Must be valid Indian number: +91 followed by 10 digits')
         return v
 
+
     @validator('ts')
-    def validate_iso8601(cls, v):
-        if not v.endswith('Z'):
-            raise ValueError('Timestamp must end with Z')
+    def validate_ist_timestamp(cls, v):
+        if not v.endswith('+05:30'):
+            raise ValueError('Timestamp must be in IST (+05:30)')
         try:
-            datetime.fromisoformat(v.replace('Z', '+00:00'))
+            datetime.fromisoformat(v)
         except ValueError:
-            raise ValueError('Invalid ISO-8601 timestamp')
+            raise ValueError('Invalid ISO-8601 IST timestamp')
         return v
+
 
 class MessageResponse(BaseModel):
     message_id: str
